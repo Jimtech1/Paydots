@@ -6,7 +6,8 @@ import { CommerceManager } from "@/components/creator/commerce-manager";
 import { ClientManager } from "@/components/creator/client-manager";
 import { FinancialTools } from "@/components/creator/financial-tools";
 import { PageBuilder } from "@/components/creator/page-builder";
-import { BarChart3, ShoppingBag, Users, Wallet, Layout } from "lucide-react";
+import { BarChart3, ShoppingBag, Users, Wallet, Layout, Building2 } from "lucide-react";
+import { MarketplacePayments } from "@/components/creator/marketplace-payments";
 
 export default function CreatorHub() {
   return (
@@ -26,7 +27,7 @@ export default function CreatorHub() {
             </div>
 
             <Tabs defaultValue="analytics" className="space-y-6">
-              <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 gap-2">
+              <TabsList className="grid w-full grid-cols-2 md:grid-cols-6 gap-2">
                 <TabsTrigger value="analytics" className="flex items-center gap-2">
                   <BarChart3 className="h-4 w-4" />
                   <span className="hidden sm:inline">Analytics</span>
@@ -42,6 +43,10 @@ export default function CreatorHub() {
                 <TabsTrigger value="financial" className="flex items-center gap-2">
                   <Wallet className="h-4 w-4" />
                   <span className="hidden sm:inline">Financial</span>
+                </TabsTrigger>
+                <TabsTrigger value="marketplace" className="flex items-center gap-2">
+                  <Building2 className="h-4 w-4" />
+                  <span className="hidden sm:inline">Marketplace</span>
                 </TabsTrigger>
                 <TabsTrigger value="builder" className="flex items-center gap-2">
                   <Layout className="h-4 w-4" />
@@ -63,6 +68,10 @@ export default function CreatorHub() {
 
               <TabsContent value="financial" className="animate-fade-in">
                 <FinancialTools />
+              </TabsContent>
+
+              <TabsContent value="marketplace" className="animate-fade-in">
+                <MarketplacePayments />
               </TabsContent>
 
               <TabsContent value="builder" className="animate-fade-in">
