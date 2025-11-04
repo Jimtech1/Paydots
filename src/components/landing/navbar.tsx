@@ -13,13 +13,34 @@ export function Navbar() {
           </Link>
 
           <div className="hidden md:flex items-center space-x-8">
-            <a href="#features" className="text-foreground hover:text-primary transition-smooth">
+            <a 
+              href="#features" 
+              className="text-foreground hover:text-primary transition-smooth"
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
               Features
             </a>
-            <a href="#for-creators" className="text-foreground hover:text-primary transition-smooth">
+            <a 
+              href="#for-creators" 
+              className="text-foreground hover:text-primary transition-smooth"
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById('for-creators')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
               For Creators
             </a>
-            <a href="#for-business" className="text-foreground hover:text-primary transition-smooth">
+            <a 
+              href="#for-business" 
+              className="text-foreground hover:text-primary transition-smooth"
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById('for-business')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
               For Business
             </a>
             <Link to="/dashboard">

@@ -28,14 +28,14 @@ export function Hero() {
             </span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 tracking-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-6 tracking-tight leading-tight">
             Financial Freedom for
             <span className="block text-white mt-2">
               Creators & Businesses
             </span>
           </h1>
 
-          <p className="text-lg sm:text-xl text-white/80 mb-10 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-white/90 mb-10 max-w-2xl mx-auto leading-relaxed px-4">
             Manage payments, access credit, and grow your business with our all-in-one financial platform designed for modern creators and entrepreneurs.
           </p>
 

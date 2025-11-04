@@ -5,16 +5,31 @@ import { CreatorSection } from "@/components/landing/creator-section";
 import { CreatorFeaturesSection } from "@/components/landing/creator-features-section";
 import { BusinessSection } from "@/components/landing/business-section";
 import { CTASection } from "@/components/landing/cta-section";
+import { useEffect } from "react";
 
 export default function Landing() {
+  useEffect(() => {
+    // Add smooth scroll behavior
+    document.documentElement.style.scrollBehavior = 'smooth';
+    return () => {
+      document.documentElement.style.scrollBehavior = 'auto';
+    };
+  }, []);
+
   return (
     <div className="min-h-screen">
       <Navbar />
       <Hero />
-      <Features />
-      <CreatorFeaturesSection />
-      <CreatorSection />
-      <BusinessSection />
+      <section id="features">
+        <Features />
+      </section>
+      <section id="for-creators">
+        <CreatorFeaturesSection />
+        <CreatorSection />
+      </section>
+      <section id="for-business">
+        <BusinessSection />
+      </section>
       <CTASection />
       
       <footer className="bg-card border-t border-border py-12">

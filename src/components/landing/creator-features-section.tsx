@@ -56,7 +56,7 @@ export function CreatorFeaturesSection() {
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
             Everything You Need to
-            <span className="block gradient-accent bg-clip-text text-transparent mt-2">
+            <span className="block text-secondary mt-2">
               Monetize Your Creativity
             </span>
           </h2>
