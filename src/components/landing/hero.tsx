@@ -7,15 +7,17 @@ export function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       <div
-        className="absolute inset-0 gradient-hero opacity-90"
+        className="absolute inset-0 z-0"
         style={{
-          backgroundImage: `linear-gradient(135deg, rgba(15, 40, 85, 0.95), rgba(15, 40, 85, 0.85), rgba(8, 180, 200, 0.8)), url(${heroImage})`,
+          backgroundImage: `url(${heroImage})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       />
       
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(8,180,200,0.3),transparent_50%)]" />
+      <div className="absolute inset-0 z-0 bg-gradient-to-br from-primary/95 via-primary/90 to-secondary/80" />
+      
+      <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_50%_120%,rgba(8,180,200,0.3),transparent_50%)]" />
 
       <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
         <div className="max-w-4xl mx-auto text-center">

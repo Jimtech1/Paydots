@@ -210,6 +210,25 @@ export default function Dashboard() {
             </Card>
           </div>
         </main>
+
+        <footer className="border-t border-border bg-card">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+              <div className="flex items-center space-x-2">
+                <div className="h-6 w-6 rounded gradient-primary" />
+                <span className="font-semibold">Paydots</span>
+              </div>
+              <p className="text-sm text-muted-foreground text-center md:text-left">
+                © 2025 Paydots. Secure payments for creators and businesses.
+              </p>
+              <div className="flex items-center space-x-4 text-sm text-muted-foreground">
+                <button className="hover:text-foreground transition-smooth">Help</button>
+                <button className="hover:text-foreground transition-smooth">Privacy</button>
+                <button className="hover:text-foreground transition-smooth">Terms</button>
+              </div>
+            </div>
+          </div>
+        </footer>
       </div>
     </div>
   );

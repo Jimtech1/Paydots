@@ -2,6 +2,8 @@ import { Navbar } from "@/components/landing/navbar";
 import { Hero } from "@/components/landing/hero";
 import { Features } from "@/components/landing/features";
 import { CreatorSection } from "@/components/landing/creator-section";
+import { CreatorFeaturesSection } from "@/components/landing/creator-features-section";
+import { BusinessSection } from "@/components/landing/business-section";
 import { CTASection } from "@/components/landing/cta-section";
 
 export default function Landing() {
@@ -10,7 +12,9 @@ export default function Landing() {
       <Navbar />
       <Hero />
       <Features />
+      <CreatorFeaturesSection />
       <CreatorSection />
+      <BusinessSection />
       <CTASection />
       
       <footer className="bg-card border-t border-border py-12">
