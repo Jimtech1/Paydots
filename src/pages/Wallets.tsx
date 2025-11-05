@@ -15,6 +15,14 @@ import {
   ArrowDownRight,
   RefreshCw,
   TrendingUp,
+  Heart,
+  Copy,
+  Share2,
+  DollarSign,
+  Filter,
+  Calendar,
+  CreditCard,
+  Zap,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -37,6 +45,9 @@ export default function Wallets() {
   const [selectedCurrency, setSelectedCurrency] = useState("USD");
   const [sendAmount, setSendAmount] = useState("");
   const [recipient, setRecipient] = useState("");
+  const [tipJarName, setTipJarName] = useState("");
+  const [tipJarMessage, setTipJarMessage] = useState("");
+  const [filterTransactions, setFilterTransactions] = useState("all");
 
   const handleSendMoney = () => {
     if (!sendAmount || !recipient) {
@@ -48,6 +59,21 @@ export default function Wallets() {
     setRecipient("");
   };
 
+  const handleCreateTipJar = () => {
+    if (!tipJarName) {
+      toast.error("Please enter a name for your tip jar");
+      return;
+    }
+    toast.success("Tip jar created! Link copied to clipboard");
+    setTipJarName("");
+    setTipJarMessage("");
+  };
+
+  const filteredTransactions = recentTransactions.filter(t => {
+    if (filterTransactions === "all") return true;
+    return t.type === filterTransactions;
+  });
+
   return (
     <div className="flex min-h-screen bg-background">
       <DashboardSidebar />
@@ -57,11 +83,23 @@ export default function Wallets() {
         
         <main className="flex-1 overflow-y-auto">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div className="mb-8">
-              <h1 className="text-3xl font-bold mb-2">Multi-Currency Wallets</h1>
-              <p className="text-muted-foreground">
-                Manage your funds across different currencies with instant conversions
-              </p>
+            <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div>
+                <h1 className="text-3xl font-bold mb-2">Multi-Currency Wallets</h1>
+                <p className="text-muted-foreground">
+                  Manage your funds across different currencies with instant conversions
+                </p>
+              </div>
+              <div className="flex gap-2">
+                <Button variant="outline" size="sm">
+                  <CreditCard className="h-4 w-4 mr-2" />
+                  Add Card
+                </Button>
+                <Button variant="outline" size="sm">
+                  <Zap className="h-4 w-4 mr-2" />
+                  Quick Actions
+                </Button>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
@@ -175,15 +213,29 @@ export default function Wallets() {
               </Card>
 
               <Card>
-                <CardHeader className="flex flex-row items-center justify-between">
-                  <CardTitle>Recent Transactions</CardTitle>
-                  <Button variant="ghost" size="icon">
-                    <RefreshCw className="h-4 w-4" />
-                  </Button>
+                <CardHeader>
+                  <div className="flex items-center justify-between mb-4">
+                    <CardTitle>Recent Transactions</CardTitle>
+                    <div className="flex gap-2">
+                      <Select value={filterTransactions} onValueChange={setFilterTransactions}>
+                        <SelectTrigger className="w-[140px]">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">All</SelectItem>
+                          <SelectItem value="received">Received</SelectItem>
+                          <SelectItem value="sent">Sent</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <Button variant="ghost" size="icon">
+                        <RefreshCw className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {recentTransactions.map((transaction) => (
+                    {filteredTransactions.map((transaction) => (
                       <div
                         key={transaction.id}
                         className="flex items-center justify-between p-3 rounded-lg hover:bg-muted/50 transition-smooth"
@@ -230,66 +282,177 @@ export default function Wallets() {
               </Card>
             </div>
 
-            <Card className="mt-6">
-              <CardHeader>
-                <CardTitle>Currency Exchange</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="space-y-2">
-                    <Label>From</Label>
-                    <Select defaultValue="USD">
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {currencies.map((c) => (
-                          <SelectItem key={c.code} value={c.code}>
-                            {c.flag} {c.code}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Currency Exchange</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="space-y-2">
+                      <Label>From</Label>
+                      <Select defaultValue="USD">
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {currencies.map((c) => (
+                            <SelectItem key={c.code} value={c.code}>
+                              {c.flag} {c.code}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label>To</Label>
+                      <Select defaultValue="NGN">
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {currencies.map((c) => (
+                            <SelectItem key={c.code} value={c.code}>
+                              {c.flag} {c.code}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label>Amount</Label>
+                      <Input type="number" placeholder="0.00" />
+                    </div>
                   </div>
                   
-                  <div className="space-y-2">
-                    <Label>To</Label>
-                    <Select defaultValue="NGN">
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {currencies.map((c) => (
-                          <SelectItem key={c.code} value={c.code}>
-                            {c.flag} {c.code}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                  <div className="mt-4 p-4 rounded-lg bg-muted/30">
+                    <div className="flex justify-between text-sm mb-2">
+                      <span className="text-muted-foreground">Exchange Rate</span>
+                      <span className="font-medium">1 USD = 1,380 NGN</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Transaction Fee</span>
+                      <span className="font-medium">Free</span>
+                    </div>
                   </div>
                   
-                  <div className="space-y-2">
-                    <Label>Amount</Label>
-                    <Input type="number" placeholder="0.00" />
+                  <Button className="w-full mt-4 gradient-primary">
+                    Convert Currency
+                  </Button>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="flex items-center gap-2">
+                      <Heart className="h-5 w-5 text-primary" />
+                      Tip Jar
+                    </CardTitle>
                   </div>
-                </div>
-                
-                <div className="mt-4 p-4 rounded-lg bg-muted/30">
-                  <div className="flex justify-between text-sm mb-2">
-                    <span className="text-muted-foreground">Exchange Rate</span>
-                    <span className="font-medium">1 USD = 1,380 NGN</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Transaction Fee</span>
-                    <span className="font-medium">Free</span>
-                  </div>
-                </div>
-                
-                <Button className="w-full mt-4 gradient-primary">
-                  Convert Currency
-                </Button>
-              </CardContent>
-            </Card>
+                </CardHeader>
+                <CardContent>
+                  <Tabs defaultValue="create" className="w-full">
+                    <TabsList className="grid w-full grid-cols-2 mb-6">
+                      <TabsTrigger value="create">Create Tip Jar</TabsTrigger>
+                      <TabsTrigger value="received">Received Tips</TabsTrigger>
+                    </TabsList>
+                    
+                    <TabsContent value="create" className="space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="tipJarName">Tip Jar Name</Label>
+                        <Input
+                          id="tipJarName"
+                          placeholder="e.g., Coffee Fund, Support My Work"
+                          value={tipJarName}
+                          onChange={(e) => setTipJarName(e.target.value)}
+                        />
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <Label htmlFor="tipMessage">Custom Message (Optional)</Label>
+                        <Input
+                          id="tipMessage"
+                          placeholder="Thank you for your support!"
+                          value={tipJarMessage}
+                          onChange={(e) => setTipJarMessage(e.target.value)}
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label>Quick Tip Amounts</Label>
+                        <div className="grid grid-cols-4 gap-2">
+                          <Button variant="outline" size="sm">$5</Button>
+                          <Button variant="outline" size="sm">$10</Button>
+                          <Button variant="outline" size="sm">$20</Button>
+                          <Button variant="outline" size="sm">Custom</Button>
+                        </div>
+                      </div>
+                      
+                      <Button 
+                        onClick={handleCreateTipJar}
+                        className="w-full gradient-accent"
+                      >
+                        <Heart className="mr-2 h-4 w-4" />
+                        Create Tip Jar Link
+                      </Button>
+
+                      <div className="pt-4 border-t">
+                        <div className="flex gap-2">
+                          <Button variant="outline" size="sm" className="flex-1">
+                            <Copy className="h-4 w-4 mr-2" />
+                            Copy Link
+                          </Button>
+                          <Button variant="outline" size="sm" className="flex-1">
+                            <Share2 className="h-4 w-4 mr-2" />
+                            Share
+                          </Button>
+                        </div>
+                      </div>
+                    </TabsContent>
+                    
+                    <TabsContent value="received" className="space-y-4">
+                      <div className="text-center py-4">
+                        <div className="h-20 w-20 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
+                          <DollarSign className="h-10 w-10 text-primary" />
+                        </div>
+                        <h3 className="text-lg font-semibold mb-2">$247.50</h3>
+                        <p className="text-sm text-muted-foreground mb-4">
+                          Total tips received this month
+                        </p>
+                      </div>
+
+                      <div className="space-y-3">
+                        {[
+                          { name: "Anonymous", amount: "$25.00", time: "2 hours ago" },
+                          { name: "Sarah K.", amount: "$50.00", time: "1 day ago" },
+                          { name: "Mike R.", amount: "$10.00", time: "2 days ago" },
+                        ].map((tip, idx) => (
+                          <div key={idx} className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
+                            <div className="flex items-center gap-3">
+                              <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+                                <Heart className="h-5 w-5 text-primary" />
+                              </div>
+                              <div>
+                                <div className="font-medium text-sm">{tip.name}</div>
+                                <div className="text-xs text-muted-foreground">{tip.time}</div>
+                              </div>
+                            </div>
+                            <div className="font-semibold text-success">{tip.amount}</div>
+                          </div>
+                        ))}
+                      </div>
+
+                      <Button variant="outline" className="w-full">
+                        View All Tips
+                      </Button>
+                    </TabsContent>
+                  </Tabs>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </main>
       </div>
