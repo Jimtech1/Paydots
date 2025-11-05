@@ -43,10 +43,10 @@ export function Navbar() {
             >
               For Business
             </a>
-            <Link to="/dashboard">
+            <Link to="/login">
               <Button variant="outline">Sign In</Button>
             </Link>
-            <Link to="/dashboard">
+            <Link to="/signup">
               <Button className="gradient-accent shadow-glow">Get Started</Button>
             </Link>
           </div>

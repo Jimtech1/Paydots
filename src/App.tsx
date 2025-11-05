@@ -12,6 +12,8 @@ import Wallets from "./pages/Wallets";
 import Cards from "./pages/Cards";
 import Loans from "./pages/Loans";
 import CreatorHub from "./pages/CreatorHub";
+import Customers from "./pages/Customers";
+import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -32,6 +34,8 @@ const App = () => (
           <Route path="/dashboard/cards" element={<Cards />} />
           <Route path="/dashboard/loans" element={<Loans />} />
           <Route path="/dashboard/creator" element={<CreatorHub />} />
+          <Route path="/dashboard/customers" element={<Customers />} />
+          <Route path="/dashboard/settings" element={<Settings />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
