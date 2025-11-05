@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState } from "react";
@@ -23,6 +24,10 @@ import {
   Calendar,
   CreditCard,
   Zap,
+  Clock,
+  Users,
+  Receipt,
+  PieChart,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -61,12 +66,16 @@ export default function Wallets() {
 
   const handleCreateTipJar = () => {
     if (!tipJarName) {
-      toast.error("Please enter a name for your tip jar");
+      toast.error("Please enter a name for your Tipdots");
       return;
     }
-    toast.success("Tip jar created! Link copied to clipboard");
+    toast.success("Tipdots created! Link copied to clipboard");
     setTipJarName("");
     setTipJarMessage("");
+  };
+
+  const handleQuickTipdots = () => {
+    toast.success("Tipdots page opened!");
   };
 
   const filteredTransactions = recentTransactions.filter(t => {
@@ -94,6 +103,14 @@ export default function Wallets() {
                 <Button variant="outline" size="sm">
                   <CreditCard className="h-4 w-4 mr-2" />
                   Add Card
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={handleQuickTipdots}
+                >
+                  <Heart className="h-4 w-4 mr-2" />
+                  Tipdots
                 </Button>
                 <Button variant="outline" size="sm">
                   <Zap className="h-4 w-4 mr-2" />
@@ -349,20 +366,20 @@ export default function Wallets() {
                   <div className="flex items-center justify-between">
                     <CardTitle className="flex items-center gap-2">
                       <Heart className="h-5 w-5 text-primary" />
-                      Tip Jar
+                      Tipdots
                     </CardTitle>
                   </div>
                 </CardHeader>
                 <CardContent>
                   <Tabs defaultValue="create" className="w-full">
                     <TabsList className="grid w-full grid-cols-2 mb-6">
-                      <TabsTrigger value="create">Create Tip Jar</TabsTrigger>
+                      <TabsTrigger value="create">Create Tipdots</TabsTrigger>
                       <TabsTrigger value="received">Received Tips</TabsTrigger>
                     </TabsList>
                     
                     <TabsContent value="create" className="space-y-4">
                       <div className="space-y-2">
-                        <Label htmlFor="tipJarName">Tip Jar Name</Label>
+                        <Label htmlFor="tipJarName">Tipdots Name</Label>
                         <Input
                           id="tipJarName"
                           placeholder="e.g., Coffee Fund, Support My Work"
@@ -396,7 +413,7 @@ export default function Wallets() {
                         className="w-full gradient-accent"
                       >
                         <Heart className="mr-2 h-4 w-4" />
-                        Create Tip Jar Link
+                        Create Tipdots Link
                       </Button>
 
                       <div className="pt-4 border-t">
@@ -450,6 +467,113 @@ export default function Wallets() {
                       </Button>
                     </TabsContent>
                   </Tabs>
+                </CardContent>
+              </Card>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Clock className="h-5 w-5 text-primary" />
+                    Scheduled Payments
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-3">
+                    {[
+                      { name: "Rent Payment", amount: "$1,200", date: "1st of every month", status: "active" },
+                      { name: "Subscription Fee", amount: "$49", date: "15th of every month", status: "active" },
+                    ].map((payment, idx) => (
+                      <div key={idx} className="p-3 rounded-lg border border-border hover:border-primary/50 transition-smooth">
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="font-medium text-sm">{payment.name}</div>
+                          <Badge variant="secondary" className="bg-success text-white text-xs">
+                            {payment.status}
+                          </Badge>
+                        </div>
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-muted-foreground">{payment.date}</span>
+                          <span className="font-semibold">{payment.amount}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <Button variant="outline" className="w-full">
+                    <Clock className="h-4 w-4 mr-2" />
+                    Schedule New Payment
+                  </Button>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Receipt className="h-5 w-5 text-accent" />
+                    Payment Requests
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-3">
+                    {[
+                      { from: "Sarah Wilson", amount: "$350", reason: "Design Project", date: "2 hours ago" },
+                      { from: "Mike Chen", amount: "$125", reason: "Consultation Fee", date: "5 hours ago" },
+                    ].map((request, idx) => (
+                      <div key={idx} className="p-3 rounded-lg border border-border hover:border-primary/50 transition-smooth">
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="font-medium text-sm">{request.from}</div>
+                          <span className="font-semibold text-accent">{request.amount}</span>
+                        </div>
+                        <div className="text-xs text-muted-foreground mb-2">{request.reason}</div>
+                        <div className="flex gap-2">
+                          <Button size="sm" className="flex-1 h-8 gradient-primary">
+                            Pay
+                          </Button>
+                          <Button size="sm" variant="outline" className="flex-1 h-8">
+                            Decline
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <Button variant="outline" className="w-full">
+                    <Send className="h-4 w-4 mr-2" />
+                    Request Payment
+                  </Button>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <PieChart className="h-5 w-5 text-success" />
+                    Spending Analytics
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-3">
+                    {[
+                      { category: "Business", amount: "$2,450", percentage: 45, color: "bg-primary" },
+                      { category: "Personal", amount: "$1,820", percentage: 35, color: "bg-accent" },
+                      { category: "Savings", amount: "$1,090", percentage: 20, color: "bg-success" },
+                    ].map((cat, idx) => (
+                      <div key={idx} className="space-y-2">
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="font-medium">{cat.category}</span>
+                          <span className="text-muted-foreground">{cat.amount}</span>
+                        </div>
+                        <div className="h-2 rounded-full bg-muted overflow-hidden">
+                          <div 
+                            className={`h-full ${cat.color} transition-all`}
+                            style={{ width: `${cat.percentage}%` }}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <Button variant="outline" className="w-full">
+                    View Full Report
+                  </Button>
                 </CardContent>
               </Card>
             </div>

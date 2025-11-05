@@ -45,7 +45,7 @@ export function CommerceManager() {
       <TabsList>
         <TabsTrigger value="services">Services</TabsTrigger>
         <TabsTrigger value="products">Products</TabsTrigger>
-        <TabsTrigger value="tipjar">Tip Jar</TabsTrigger>
+        <TabsTrigger value="tipjar">Tipdots</TabsTrigger>
       </TabsList>
 
       <TabsContent value="services">
@@ -202,7 +202,7 @@ export function CommerceManager() {
       <TabsContent value="tipjar">
         <Card>
           <CardHeader>
-            <CardTitle>Tip Jar Configuration</CardTitle>
+            <CardTitle>Tipdots Configuration</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-2">
@@ -245,7 +245,7 @@ export function CommerceManager() {
             </div>
 
             <Button className="w-full gradient-primary">
-              Save Tip Jar Settings
+              Save Tipdots Settings
             </Button>
           </CardContent>
         </Card>

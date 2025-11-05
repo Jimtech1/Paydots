@@ -34,7 +34,7 @@ interface PageSection {
 
 const initialSections: PageSection[] = [
   { id: "hero", type: "hero", title: "Hero Header", icon: User, enabled: true, order: 1 },
-  { id: "tipjar", type: "tipjar", title: "Tip Jar", icon: Coffee, enabled: true, order: 2 },
+  { id: "tipjar", type: "tipjar", title: "Tipdots", icon: Coffee, enabled: true, order: 2 },
   { id: "services", type: "services", title: "Services & Booking", icon: Calendar, enabled: true, order: 3 },
   { id: "products", type: "products", title: "Product Store", icon: Package, enabled: true, order: 4 },
   { id: "contact", type: "contact", title: "Contact & CTA", icon: Mail, enabled: true, order: 5 },
