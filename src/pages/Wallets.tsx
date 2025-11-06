@@ -101,8 +101,12 @@ export default function Wallets() {
               </div>
               <div className="flex gap-2">
                 <Button variant="outline" size="sm">
-                  <CreditCard className="h-4 w-4 mr-2" />
-                  Add Card
+                  <Send className="h-4 w-4 mr-2" />
+                  Send
+                </Button>
+                <Button variant="outline" size="sm">
+                  <Download className="h-4 w-4 mr-2" />
+                  Receive
                 </Button>
                 <Button 
                   variant="outline" 
@@ -111,10 +115,6 @@ export default function Wallets() {
                 >
                   <Heart className="h-4 w-4 mr-2" />
                   Tipdots
-                </Button>
-                <Button variant="outline" size="sm">
-                  <Zap className="h-4 w-4 mr-2" />
-                  Quick Actions
                 </Button>
               </div>
             </div>

@@ -43,7 +43,10 @@ const Signup = () => {
   return (
     <div className="min-h-screen flex items-center justify-center gradient-hero p-4">
       <Card className="w-full max-w-md shadow-lg">
-        <CardHeader className="space-y-1">
+        <CardHeader className="space-y-3">
+          <div className="text-center">
+            <h1 className="text-3xl md:text-4xl font-bold mb-1">Paydots</h1>
+          </div>
           <CardTitle className="text-2xl md:text-3xl text-center">Create an account</CardTitle>
           <CardDescription className="text-center">
             Enter your details to get started
