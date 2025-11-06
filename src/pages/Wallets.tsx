@@ -7,6 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import {
   Wallet,
@@ -53,6 +55,16 @@ export default function Wallets() {
   const [tipJarName, setTipJarName] = useState("");
   const [tipJarMessage, setTipJarMessage] = useState("");
   const [filterTransactions, setFilterTransactions] = useState("all");
+  const [requestPaymentOpen, setRequestPaymentOpen] = useState(false);
+  const [schedulePaymentOpen, setSchedulePaymentOpen] = useState(false);
+  const [requestAmount, setRequestAmount] = useState("");
+  const [requestRecipient, setRequestRecipient] = useState("");
+  const [requestReason, setRequestReason] = useState("");
+  const [schedulePaymentName, setSchedulePaymentName] = useState("");
+  const [schedulePaymentAmount, setSchedulePaymentAmount] = useState("");
+  const [schedulePaymentRecipient, setSchedulePaymentRecipient] = useState("");
+  const [schedulePaymentFrequency, setSchedulePaymentFrequency] = useState("monthly");
+  const [schedulePaymentDate, setSchedulePaymentDate] = useState("");
 
   const handleSendMoney = () => {
     if (!sendAmount || !recipient) {
@@ -76,6 +88,31 @@ export default function Wallets() {
 
   const handleQuickTipdots = () => {
     toast.success("Tipdots page opened!");
+  };
+
+  const handleRequestPayment = () => {
+    if (!requestAmount || !requestRecipient || !requestReason) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+    toast.success(`Payment request sent to ${requestRecipient} for ${requestAmount}`);
+    setRequestPaymentOpen(false);
+    setRequestAmount("");
+    setRequestRecipient("");
+    setRequestReason("");
+  };
+
+  const handleSchedulePayment = () => {
+    if (!schedulePaymentName || !schedulePaymentAmount || !schedulePaymentRecipient || !schedulePaymentDate) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+    toast.success(`Payment scheduled: ${schedulePaymentName} for ${schedulePaymentAmount}`);
+    setSchedulePaymentOpen(false);
+    setSchedulePaymentName("");
+    setSchedulePaymentAmount("");
+    setSchedulePaymentRecipient("");
+    setSchedulePaymentDate("");
   };
 
   const filteredTransactions = recentTransactions.filter(t => {
@@ -499,10 +536,104 @@ export default function Wallets() {
                       </div>
                     ))}
                   </div>
-                  <Button variant="outline" className="w-full">
-                    <Clock className="h-4 w-4 mr-2" />
-                    Schedule New Payment
-                  </Button>
+                  <Dialog open={schedulePaymentOpen} onOpenChange={setSchedulePaymentOpen}>
+                    <DialogTrigger asChild>
+                      <Button variant="outline" className="w-full">
+                        <Clock className="h-4 w-4 mr-2" />
+                        Schedule New Payment
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[500px]">
+                      <DialogHeader>
+                        <DialogTitle>Schedule New Payment</DialogTitle>
+                      </DialogHeader>
+                      <div className="space-y-4 py-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="schedulePaymentName">Payment Name</Label>
+                          <Input
+                            id="schedulePaymentName"
+                            placeholder="e.g., Monthly Rent, Subscription"
+                            value={schedulePaymentName}
+                            onChange={(e) => setSchedulePaymentName(e.target.value)}
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="schedulePaymentRecipient">Recipient</Label>
+                          <Input
+                            id="schedulePaymentRecipient"
+                            placeholder="Enter username, email, or phone"
+                            value={schedulePaymentRecipient}
+                            onChange={(e) => setSchedulePaymentRecipient(e.target.value)}
+                          />
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="schedulePaymentAmount">Amount</Label>
+                            <Input
+                              id="schedulePaymentAmount"
+                              type="number"
+                              placeholder="0.00"
+                              value={schedulePaymentAmount}
+                              onChange={(e) => setSchedulePaymentAmount(e.target.value)}
+                            />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <Label htmlFor="schedulePaymentCurrency">Currency</Label>
+                            <Select defaultValue={selectedCurrency}>
+                              <SelectTrigger>
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {currencies.map((c) => (
+                                  <SelectItem key={c.code} value={c.code}>
+                                    {c.flag} {c.code}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="schedulePaymentFrequency">Frequency</Label>
+                            <Select value={schedulePaymentFrequency} onValueChange={setSchedulePaymentFrequency}>
+                              <SelectTrigger>
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="weekly">Weekly</SelectItem>
+                                <SelectItem value="monthly">Monthly</SelectItem>
+                                <SelectItem value="quarterly">Quarterly</SelectItem>
+                                <SelectItem value="yearly">Yearly</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+
+                          <div className="space-y-2">
+                            <Label htmlFor="schedulePaymentDate">Start Date</Label>
+                            <Input
+                              id="schedulePaymentDate"
+                              type="date"
+                              value={schedulePaymentDate}
+                              onChange={(e) => setSchedulePaymentDate(e.target.value)}
+                            />
+                          </div>
+                        </div>
+
+                        <Button 
+                          onClick={handleSchedulePayment}
+                          className="w-full gradient-primary"
+                        >
+                          <Clock className="mr-2 h-4 w-4" />
+                          Schedule Payment
+                        </Button>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
                 </CardContent>
               </Card>
 
@@ -536,10 +667,78 @@ export default function Wallets() {
                       </div>
                     ))}
                   </div>
-                  <Button variant="outline" className="w-full">
-                    <Send className="h-4 w-4 mr-2" />
-                    Request Payment
-                  </Button>
+                  <Dialog open={requestPaymentOpen} onOpenChange={setRequestPaymentOpen}>
+                    <DialogTrigger asChild>
+                      <Button variant="outline" className="w-full">
+                        <Send className="h-4 w-4 mr-2" />
+                        Request Payment
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[500px]">
+                      <DialogHeader>
+                        <DialogTitle>Request Payment</DialogTitle>
+                      </DialogHeader>
+                      <div className="space-y-4 py-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="requestRecipient">Request From</Label>
+                          <Input
+                            id="requestRecipient"
+                            placeholder="Enter username, email, or phone"
+                            value={requestRecipient}
+                            onChange={(e) => setRequestRecipient(e.target.value)}
+                          />
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="requestAmount">Amount</Label>
+                            <Input
+                              id="requestAmount"
+                              type="number"
+                              placeholder="0.00"
+                              value={requestAmount}
+                              onChange={(e) => setRequestAmount(e.target.value)}
+                            />
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <Label htmlFor="requestCurrency">Currency</Label>
+                            <Select defaultValue={selectedCurrency}>
+                              <SelectTrigger>
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {currencies.map((c) => (
+                                  <SelectItem key={c.code} value={c.code}>
+                                    {c.flag} {c.code}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="requestReason">Reason/Description</Label>
+                          <Textarea
+                            id="requestReason"
+                            placeholder="What is this payment for?"
+                            value={requestReason}
+                            onChange={(e) => setRequestReason(e.target.value)}
+                            rows={3}
+                          />
+                        </div>
+
+                        <Button 
+                          onClick={handleRequestPayment}
+                          className="w-full gradient-accent"
+                        >
+                          <Send className="mr-2 h-4 w-4" />
+                          Send Request
+                        </Button>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
                 </CardContent>
               </Card>
 
