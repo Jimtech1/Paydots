@@ -10,13 +10,27 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
 
 export function DashboardHeader() {
   const navigate = useNavigate();
+  const { user, profile, signOut } = useAuth();
 
-  const handleLogout = () => {
-    // Add logout logic here
+  const handleLogout = async () => {
+    await signOut();
+    toast.success("Logged out successfully");
     navigate("/login");
+  };
+
+  const getInitials = (name: string | null | undefined) => {
+    if (!name) return "U";
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
   };
 
   return (
@@ -43,20 +57,20 @@ export function DashboardHeader() {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="relative">
                 <Avatar className="h-8 w-8">
-                  <AvatarImage src="" alt="User" />
-                  <AvatarFallback>JD</AvatarFallback>
+                  <AvatarImage src={profile?.avatar_url || ""} alt="User" />
+                  <AvatarFallback>{getInitials(profile?.full_name)}</AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
               <DropdownMenuLabel className="flex items-center gap-2">
                 <Avatar className="h-8 w-8">
-                  <AvatarImage src="" alt="User" />
-                  <AvatarFallback>JD</AvatarFallback>
+                  <AvatarImage src={profile?.avatar_url || ""} alt="User" />
+                  <AvatarFallback>{getInitials(profile?.full_name)}</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col">
-                  <span className="text-sm font-medium">John Doe</span>
-                  <span className="text-xs text-muted-foreground">john@example.com</span>
+                  <span className="text-sm font-medium">{profile?.full_name || "User"}</span>
+                  <span className="text-xs text-muted-foreground">{user?.email}</span>
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />

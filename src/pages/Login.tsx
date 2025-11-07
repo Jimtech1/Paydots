@@ -5,29 +5,33 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { signIn } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleDemoLogin = () => {
-    setIsLoading(true);
-    // Simulate login delay
-    setTimeout(() => {
-      toast.success("Demo login successful!");
-      navigate("/dashboard");
-    }, 1000);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
       toast.error("Please fill in all fields");
       return;
     }
-    handleDemoLogin();
+
+    setIsLoading(true);
+
+    const { error } = await signIn(email, password);
+
+    if (error) {
+      toast.error(error.message);
+      setIsLoading(false);
+    } else {
+      toast.success("Login successful!");
+      navigate("/dashboard");
+    }
   };
 
   return (
@@ -74,24 +78,6 @@ const Login = () => {
               {isLoading ? "Signing in..." : "Sign in"}
             </Button>
           </form>
-          
-          <div className="relative my-4">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-card px-2 text-muted-foreground">Or</span>
-            </div>
-          </div>
-
-          <Button
-            variant="outline"
-            className="w-full"
-            onClick={handleDemoLogin}
-            disabled={isLoading}
-          >
-            Demo Login
-          </Button>
         </CardContent>
         <CardFooter className="flex flex-col space-y-4">
           <div className="text-sm text-center text-muted-foreground">
